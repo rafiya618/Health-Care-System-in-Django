@@ -1,0 +1,176 @@
+{% load static %}
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        .card {
+            width: 45%; /* Set the width of each card */
+            margin: 0 2.5%; /* Set the margin between cards */
+            display: inline-block; /* Make the cards inline */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background:#ff0831;">
+        <a href="{%url 'doctor_page' %}" class="navbar-brand">HEALTHCARE DOCTOR</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <div class="navbar-nav">
+                <a href="{% url 'doctor_page_view' %}" class="nav-item nav-link">View Prescriptions</a>
+                <a href="{% url 'doctor_page_view' %}" class="nav-item nav-link">View Tests</a>
+                <a href="{% url 'doctor_page_view' %}" class="nav-item nav-link">View Reports</a>
+            </div>
+            <div class="navbar-nav" style=" margin-left: 10%;">
+                <a href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+    {% block content %}
+    {% if error == "no" %}
+         <script>
+           alert('Record Save Successfully');
+         </script>
+    {% endif %}
+
+    {% if error == "yes" %}
+         <script>
+            alert('Something went wrong, Try Again');
+         </script>
+    {% endif %}
+
+    <br><br><br>
+
+    <div class="container">
+        <div class="row">
+            <div id="prescriptions" class="card shadow m-2">
+                <div class="card-body">
+                    <h5 class="p-2" style="border-bottom: 2px solid orange">Add Prescription</h5>
+                    <br>
+                    <div class="container-fluid">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="add_prescription_form" value="1">
+                            <div class="form-row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Serial Number</label>
+                                        <input type="text" name="serial_number" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Doctor Name</label>
+                                        <select name="doctor" class="form-control">
+                                            {% for i in doctors %}
+                                            <option value="{{i.id}}">{{i.name}} [{{i.id}}]</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Patient Name</label>
+                                        <select name="current_patient" class="form-control">
+                                            {% for i in patients %}
+                                            <option value="{{i.id}}">{{i.name}} [{{i.id}}]</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tests" class="card shadow m-2">
+                <div class="card-body">
+                    <h5 class="p-2" style="border-bottom: 2px solid orange">Add Medical Report</h5>
+                    <br>
+                    <div class="container-fluid">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="add_report_form" value="1">
+                            <div class="form-row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Report Number</label>
+                                        <input type="text" name="report_number" class="form-control" placeholder="Enter Report Number" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Patient Name</label>
+                                        <select name="current_patient" class="form-control">
+                                            {% for i in patients %}
+                                            <option value="{{i.id}}">{{i.name}} [{{i.id}}]</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reports" class="card shadow m-2">
+                <div class="card-body">
+                    <h5 class="p-2" style="border-bottom: 2px solid orange">Add Tests</h5>
+                    <br>
+                    <div class="container-fluid">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="add_test_form" value="1">
+                            <div class="form-row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Blood Group</label>
+                                        <select name="blood_group" class="form-control" required>
+                                            <option value="">Select Blood Group</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Patient Name</label>
+                                        <select name="current_patient" class="form-control">
+                                            {% for i in patients %}
+                                            <option value="{{i.id}}">{{i.name}} [{{i.id}}]</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+{% endblock content %}

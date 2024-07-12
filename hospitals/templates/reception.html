@@ -1,0 +1,161 @@
+{% load static %}
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        .card {
+            width: 45%; /* Set the width of each card */
+            margin: 0 2.5%; /* Set the margin between cards */
+            display: inline-block; /* Make the cards inline */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background:#ff0831;">
+        <a href="#" class="navbar-brand">HEALTHCARE RECEPTION</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            
+            <div class="navbar-nav" style=" margin-left: 90%;">
+                <a href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+    {% block content %}
+    {% if error == "no" %}
+         <script>
+           alert('Record Save Successfully');
+         </script>
+    {% endif %}
+
+    {% if error == "yes" %}
+         <script>
+            alert('Something went wrong, Try Again');
+         </script>
+    {% endif %}
+
+    <br><br><br>
+
+    <div class="container">
+        <div class="row">
+            <div id="prescriptions" class="card shadow m-2">
+                <div class="card-body">
+                    <h5 class="p-2" style="border-bottom: 2px solid orange">Add Appointment</h5>
+                         <br>
+                    <div class="container-fluid">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="add_appointment_form" value="1">
+                            <div class="form-row">
+            
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Doctor Name</label>
+                                        <select name="doctor" class="form-control">
+                                            {% for i in doctors %}
+                                            <option value="{{i.id}}">{{i.name}} [{{i.id}}]</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+            
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Patient Name</label>
+                                        <select name="patient" class="form-control">
+                                            {% for i in patients %}
+                                            <option value="{{i.id}}">{{i.name}} [{{i.id}}]</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+            
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Date</label>
+                                        <input type="date" name="date" class="form-control" required>
+                                    </div>
+                                </div>
+            
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Time</label>
+                                        <input type="time" name="time" class="form-control" required>
+                                    </div>
+                                </div>
+            
+                            </div>
+                            <hr>
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tests" class="card shadow m-2">
+                <div class="card-body">
+                    <h5 class="p-2" style="border-bottom: 2px solid orange">Add Patient</h5>
+                         <br>
+                    <div class="container-fluid">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="add_patient_form" value="1">
+                            <div class="form-row">
+            
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Patient Name</label>
+                                        <input type="text" name="name" class="form-control" placeholder="Enter Patient Name" required>
+                                    </div>
+                                </div>
+            
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Mobile Number</label>
+                                        <input type="text" name="mobile" class="form-control" placeholder="Enter Ten Digit Mobile Number" required>
+                                    </div>
+                                </div>
+            
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Gender</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="male" value="Male">
+                                            <label class="form-check-label" for="male">Male</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="female" value="Female">
+                                            <label class="form-check-label" for="female">Female</label>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <textarea name="address" class="form-control" placeholder="Enter Address" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+{% endblock content %}
